@@ -94,14 +94,6 @@
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      // console.log(this.rows());
-      // this.rows().forEach(function(row, rowIndex, matrix) {
-      //   console.log(this); //is window for some reason
-      //   if (this.hasRowConflictAt(rowIndex)) {
-      //     return true;
-      //   }
-      //   return false;
-      // });
       for (var i = 0; i < this.rows().length; i++) {
         if (this.hasRowConflictAt(i)) {
           return true;
