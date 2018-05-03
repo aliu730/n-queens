@@ -86,7 +86,7 @@
         }
       });
       if (counter > 1) {
-        return true;
+        return true;    
       } else {
         return false;
       }
