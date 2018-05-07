@@ -33,7 +33,6 @@ window.findNRooksSolution = function(n) {
       } 
     }
   } 
-
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution.rows();
 };
@@ -45,15 +44,23 @@ window.countNRooksSolutions = function(n) {
   var solutionCounter = 0;
   for (var row = 0; row < n; row++) {
     for (var col = 0; col < n; col++) {
-      var newSol = solutionFinder(row,col, n);
+      var newSol = solutionFinderForwards(row, col, n);
       if (alreadyExist(solutions, newSol) === false) {
         solutions.push(newSol);
       }
     }
   }
-  function solutionFinder (rowIndex, colIndex, n) {
+  for (var row = n-1; row >= 0; row--) {
+    for (var col = 0; col < n; col++) {
+      debugger;
+      var newSol2 = solutionFinderBackwards(row, col, n);
+      if (alreadyExist(solutions, newSol2) === false) {
+        solutions.push(newSol2);
+      }
+    }
+  }
+  function solutionFinderForwards (rowIndex, colIndex, n) {
     var newBoard = new Board({n: n});
-    // debugger;
     newBoard.togglePiece(rowIndex, colIndex);
     for (var r = 0; r < newBoard.rows().length; r++) {
       for (var c = 0; c < newBoard.rows().length; c++) {
@@ -66,6 +73,25 @@ window.countNRooksSolutions = function(n) {
       }
     }
     return newBoard;
+  }
+  // [0,1,0]
+  // [1,1,1]
+  // [1,2,3]
+  function solutionFinderBackwards (rowIndex, colIndex, n) { //bottom left to top right  Going left to right
+    var newBoard2 = new Board({n: n});
+    newBoard2.togglePiece(rowIndex, colIndex);
+    for (var r = newBoard2.rows().length-1; r >= 0; r--) {
+      for (var c = 0; c <= n; c++) {
+        if (newBoard2.get(r)[c] === 0) {
+          newBoard2.togglePiece(r,c);
+          if (newBoard2.hasAnyRooksConflicts()) {
+            newBoard2.togglePiece(r,c);
+          }
+        }
+      }
+    }
+    //console.log(newBoard2);
+    return newBoard2;
   }
   function alreadyExist (solutions, newSol) {
     for (var s = 0; s < solutions.length; s++) {
